@@ -62,6 +62,8 @@ public class WurstplusModuleManager {
 		add_hack(new WurstplusAutoTotem());
 		add_hack(new WurstplusAutoMine());
 
+		add_hack(new WurstplusHoleAI());
+
 		// Exploit.
 		add_hack(new WurstplusXCarry());
 		add_hack(new WurstplusNoSwing());

@@ -29,7 +29,7 @@ public class WurstplusAutoEz extends WurstplusHack {
 
     int delay_count = 0;
 
-    WurstplusSetting discord = create("Discord", "EzDiscord", false);
+
     WurstplusSetting custom = create("Custom", "EzCustom", false);
 
     private static final ConcurrentHashMap targeted_players = new ConcurrentHashMap();
@@ -108,10 +108,7 @@ public class WurstplusAutoEz extends WurstplusHack {
         if (custom.get_value(true)) {
             message += WurstplusEzMessageUtil.get_message().replace("[", "").replace("]", "");
         } else {
-            message += "you just got nae nae'd by wurst+2";
-        }
-        if (discord.get_value(true)) {
-            message += " - discord.gg/wurst";
+            message += "gg " + name;
         }
         mc.player.connection.sendPacket(new CPacketChatMessage(message));
     }

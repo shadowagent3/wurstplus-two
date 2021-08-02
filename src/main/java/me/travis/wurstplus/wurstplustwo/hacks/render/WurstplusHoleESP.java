@@ -5,6 +5,7 @@ import me.travis.wurstplus.wurstplustwo.event.events.WurstplusEventRender;
 import me.travis.wurstplus.wurstplustwo.guiscreen.settings.WurstplusSetting;
 import me.travis.wurstplus.wurstplustwo.hacks.WurstplusCategory;
 import me.travis.wurstplus.wurstplustwo.hacks.WurstplusHack;
+import me.travis.wurstplus.wurstplustwo.util.WurstplusHoleUtil;
 import me.travis.wurstplus.wurstplustwo.util.WurstplusPair;
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
@@ -14,7 +15,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 // Travis.
-
 
 public class WurstplusHoleESP extends WurstplusHack {
 
@@ -26,7 +26,8 @@ public class WurstplusHoleESP extends WurstplusHack {
 		this.description = "lets you know where holes are";
 	}
 
-	WurstplusSetting mode 				= create("Mode", "HoleESPMode", "Pretty", combobox("Pretty", "Solid", "Outline"));
+	WurstplusSetting mode 				= create("Mode", "HoleESPMode", "Pretty",
+			combobox("Pretty", "Solid", "Outline"));
 	WurstplusSetting off_set 			= create("Height", "HoleESPOffSetSide", 0.2, 0.0, 1.0);
 	WurstplusSetting range   			= create("Range", "HoleESPRange", 6, 1, 12);
 	WurstplusSetting hide_own         	= create("Hide Own", "HoleESPHideOwn", true);
@@ -141,7 +142,17 @@ public class WurstplusHoleESP extends WurstplusHack {
 			List<BlockPos> spheres = sphere(player_as_blockpos(), colapso_range, colapso_range);
 
 			for (BlockPos pos : spheres) {
-				if (!mc.world.getBlockState(pos).getBlock().equals(Blocks.AIR)) {
+
+				WurstplusHoleUtil.Hole Bpostype = WurstplusHoleUtil.getHoleType(pos);
+
+				if(Bpostype != WurstplusHoleUtil.Hole.None){
+
+					if(Bpostype == WurstplusHoleUtil.Hole.Bedrock || (Bpostype == WurstplusHoleUtil.Hole.BedrockDual && dual_enable.get_value(true)))
+						holes.add(new WurstplusPair<BlockPos, Boolean>(pos, true));
+					else if(Bpostype == WurstplusHoleUtil.Hole.Partial || (Bpostype == WurstplusHoleUtil.Hole.PartialDual && dual_enable.get_value(true)))
+						holes.add(new WurstplusPair<BlockPos, Boolean>(pos, false));
+				}
+				/*if (!mc.world.getBlockState(pos).getBlock().equals(Blocks.AIR)) {
 					continue;
 				}
 
@@ -169,7 +180,8 @@ public class WurstplusHoleESP extends WurstplusHack {
 				}) {
 					Block block = mc.world.getBlockState(pos.add(seems_blocks)).getBlock();
 
-					if (block != Blocks.BEDROCK && block != Blocks.OBSIDIAN && block != Blocks.ENDER_CHEST && block != Blocks.ANVIL) {
+					if (block != Blocks.BEDROCK && block != Blocks.OBSIDIAN && block != Blocks.ENDER_CHEST
+							&& block != Blocks.ANVIL) {
 						possible = false;
 
 						if (counter == 0) break;
@@ -208,7 +220,8 @@ public class WurstplusHoleESP extends WurstplusHack {
 				BlockPos second_pos = pos.add(orientConv(air_orient));
 				if (checkDual(second_pos, air_orient)) {
 
-					boolean low_ceiling_hole = mc.world.getBlockState(second_pos.add(0,1,0)).getBlock().equals(Blocks.AIR) &&
+					boolean low_ceiling_hole
+							= mc.world.getBlockState(second_pos.add(0,1,0)).getBlock().equals(Blocks.AIR) &&
 
 							!mc.world.getBlockState(second_pos.add(0,2,0)).getBlock().equals(Blocks.AIR);
 							// to avoid rendering the same hole twice
@@ -222,7 +235,8 @@ public class WurstplusHoleESP extends WurstplusHack {
 						if (low_ceiling_hole) holes.add(new WurstplusPair<BlockPos, Boolean>(second_pos, false));
 					}
 
-				}
+				}*/
+
 
 			}
 		}
@@ -311,7 +325,8 @@ public class WurstplusHoleESP extends WurstplusHack {
 
 
 			Block block = mc.world.getBlockState(second_block.add(seems_blocks)).getBlock();
-			if (block != Blocks.BEDROCK && block != Blocks.OBSIDIAN && block != Blocks.ENDER_CHEST && block != Blocks.ANVIL) {
+			if (block != Blocks.BEDROCK && block != Blocks.OBSIDIAN && block != Blocks.ENDER_CHEST
+					&& block != Blocks.ANVIL) {
 				return false;
 			}
 
@@ -343,7 +358,8 @@ public class WurstplusHoleESP extends WurstplusHack {
 					color_a = ao.get_value(1);
 				} else continue;
 
-				if (hide_own.get_value(true) && hole.getKey().equals((Object)new BlockPos(mc.player.posX, mc.player.posY, mc.player.posZ))) {
+				if (hide_own.get_value(true) && hole.getKey().equals((Object)new BlockPos(mc.player.posX,
+						mc.player.posY, mc.player.posZ))) {
 					continue;
 				}
 
@@ -403,6 +419,7 @@ public class WurstplusHoleESP extends WurstplusHack {
 	}
 
 	public BlockPos player_as_blockpos() {
-		return new BlockPos(Math.floor((double) mc.player.posX), Math.floor((double) mc.player.posY), Math.floor((double) mc.player.posZ));
+		return new BlockPos(Math.floor((double) mc.player.posX), Math.floor((double) mc.player.posY),
+				Math.floor((double) mc.player.posZ));
 	}
 }

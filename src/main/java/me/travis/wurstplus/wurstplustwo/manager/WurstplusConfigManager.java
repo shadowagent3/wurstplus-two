@@ -259,6 +259,7 @@ public class WurstplusConfigManager {
 
 
                 } catch (Exception ignored) {
+
                 } // TODO : figure out what causes this
 
             }

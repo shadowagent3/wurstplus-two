@@ -102,7 +102,7 @@ public class WurstplusAntiRacist extends WurstplusHack {
         return list[r.nextInt(list.length)];
     }
 
-    // Anti n-word
+    // Anti n-word but better
 
     @EventHandler
     private Listener<WurstplusEventPacket.SendPacket> listener = new Listener<>(event -> {
@@ -117,10 +117,10 @@ public class WurstplusAntiRacist extends WurstplusHack {
 
             if (message.contains(nigger) || message.contains(nigga)) {
 
-                String x = Integer.toString((int) (mc.player.posX));
-                String z = Integer.toString((int) (mc.player.posZ));
+                //String x = Integer.toString((int) (mc.player.posX));
+                //String z = Integer.toString((int) (mc.player.posZ));
 
-                String coords = x + " " + z;
+                String coords = "George Floyd's Grave";
 
                 message = (random_string(random_correction));
                 mc.player.connection.sendPacket(new CPacketChatMessage("Hi, im at " + coords + ", come teach me a lesson about racism"));

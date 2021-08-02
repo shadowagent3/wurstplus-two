@@ -4,6 +4,7 @@ import me.travis.wurstplus.Wurstplus;
 import me.travis.wurstplus.wurstplustwo.guiscreen.settings.WurstplusSetting;
 import me.travis.wurstplus.wurstplustwo.hacks.WurstplusCategory;
 import me.travis.wurstplus.wurstplustwo.hacks.WurstplusHack;
+import me.travis.wurstplus.wurstplustwo.util.WurstplusHoleUtil;
 import me.travis.wurstplus.wurstplustwo.util.WurstplusPlayerUtil;
 import net.minecraft.client.gui.inventory.GuiInventory;
 import net.minecraft.init.Blocks;
@@ -50,7 +51,9 @@ public class WurstplusOffhand extends WurstplusHack {
                     swap_items(get_item_slot(Items.END_CRYSTAL),0);
                     return;
                 }
-                if (gapple_in_hole.get_value(true) && hp > gapple_hole_hp.get_value(1) && is_in_hole()) {
+
+                //gets dual holes too
+                if (gapple_in_hole.get_value(true) && hp > gapple_hole_hp.get_value(1) && WurstplusHoleUtil.checkAny(WurstplusPlayerUtil.GetLocalPlayerPosFloored())) {
                     swap_items(get_item_slot(Items.GOLDEN_APPLE), delay.get_value(true) ? 1 : 0);
                     return;
                 }
@@ -99,17 +102,6 @@ public class WurstplusOffhand extends WurstplusHack {
 
         mc.playerController.updateController();
     }
-
-    private boolean is_in_hole() {
-
-        BlockPos player_block = WurstplusPlayerUtil.GetLocalPlayerPosFloored();
-
-        return mc.world.getBlockState(player_block.east()).getBlock() != Blocks.AIR
-                && mc.world.getBlockState(player_block.west()).getBlock() != Blocks.AIR
-                && mc.world.getBlockState(player_block.north()).getBlock() != Blocks.AIR
-                && mc.world.getBlockState(player_block.south()).getBlock() != Blocks.AIR;
-    }
-
 
     private int get_item_slot(Item input) {
         if (input == mc.player.getHeldItemOffhand().getItem()) return -1;
